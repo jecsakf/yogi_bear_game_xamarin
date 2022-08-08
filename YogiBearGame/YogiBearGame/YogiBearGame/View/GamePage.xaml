@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:DLToolkit.Forms.Controls;assembly=DLToolkit.Forms.Controls.FlowListView"
+             x:Class="YogiBearGame.View.GamePage"
+             Title="Game">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <!-- stílusok a vezérlőknek -->
+            <Style x:Key="MainLabelStyle" TargetType="Label">
+                <Setter Property="FontSize" Value="Small" />
+                <Setter Property="Margin" Value="1" />
+            </Style>
+            <Style x:Key="MainButtonStyle" TargetType="Button">
+                <Setter Property="FontSize" Value="Micro" />
+                <Setter Property="BackgroundColor" Value="LightGray" />
+                <Setter Property="BorderRadius" Value="0" />
+                <Setter Property="BorderWidth" Value="0" />
+                <Setter Property="BorderColor" Value="Black" />
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="HeightRequest" Value="40" />
+            </Style>
+            <Style x:Key="FieldStyle" TargetType="ImageButton">
+                <Setter Property="Margin" Value="1" />
+                <Setter Property="BorderWidth" Value="0" />
+                <Setter Property="WidthRequest" Value="60" />
+                <Setter Property="HeightRequest" Value="70" />
+                <Setter Property="BackgroundColor" Value="LightGreen" />
+                <Setter Property="Aspect" Value="AspectFit"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="140" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- a gombokat a képernyő tetejére helyezzük -->
+        <FlexLayout Grid.Row="0" HeightRequest="41" AlignItems="Center" JustifyContent="SpaceEvenly">
+            <Button Text="New Game" Command="{Binding NewGameCommand}" Style="{StaticResource MainButtonStyle}" />
+            <Button Text="Start" Command="{Binding StartStopCommand}" Style="{StaticResource MainButtonStyle}"/>
+            <Button Text="Stop" Command="{Binding StartStopCommand}" Style="{StaticResource MainButtonStyle}"/>
+            <Button Text="Settings" Command="{Binding ExitCommand}" Style="{StaticResource MainButtonStyle}" />
+        </FlexLayout>
+
+        <controls:FlowListView Grid.Row="1" FlowColumnCount="{Binding GameTableSize}" FlowItemsSource="{Binding Fields}" SeparatorVisibility="None">
+            <!-- a játéktáblát egy sorfolytonos listával valósítjuk meg -->
+            <controls:FlowListView.FlowColumnTemplate>
+                <DataTemplate>
+                    <!-- a rács elemei gombok lesznek -->
+                    <ImageButton Command="{Binding StepCommand}" CommandParameter="{Binding Number}" Source="{Binding Image}"  Style="{StaticResource FieldStyle}" VerticalOptions="Center" HorizontalOptions="Center" />
+                </DataTemplate>
+            </controls:FlowListView.FlowColumnTemplate>
+        </controls:FlowListView>
+
+        <StackLayout VerticalOptions="Center"  HorizontalOptions="Start" Grid.Row="2">
+            <ImageButton Command="{Binding KeyDownCommand}" CommandParameter="A" Source="/Resources/drawable/left_arrow.png" Aspect="AspectFit" WidthRequest="70" HeightRequest="70"/>
+        </StackLayout>
+        <StackLayout VerticalOptions="Center" HorizontalOptions="End" Grid.Row="2">
+            <ImageButton Command="{Binding KeyDownCommand}" CommandParameter="D" Source="/Resources/drawable/right_arrow.png" Aspect="AspectFit" WidthRequest="70" HeightRequest="70"/>
+        </StackLayout>
+        <StackLayout VerticalOptions="Start" HorizontalOptions="Center" Grid.Row="2">
+            <ImageButton Command="{Binding KeyDownCommand}" CommandParameter="W" Source="/Resources/drawable/up_arrow.png" Aspect="AspectFit" WidthRequest="70" HeightRequest="70"/>
+        </StackLayout>
+        <StackLayout VerticalOptions="End" HorizontalOptions="Center" Grid.Row="2">
+            <ImageButton Command="{Binding KeyDownCommand}" CommandParameter="S" Source="/Resources/drawable/down_arrow.png" Aspect="AspectFit" WidthRequest="70" HeightRequest="70"/>
+        </StackLayout>
+        
+        <!-- az információkat alul írjuk ki -->
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Start" Grid.Row="3">
+            <Label Text="Picked baskets count: " Style="{StaticResource MainLabelStyle}" />
+            <Label Text="{Binding PickedBasketsCount}" Style="{StaticResource MainLabelStyle}" />
+        </StackLayout>
+        <StackLayout Orientation="Horizontal" HorizontalOptions="End" Grid.Row="3">
+            <Label Text="Game time: " Style="{StaticResource MainLabelStyle}" />
+            <Label Text="{Binding GameTime}" Style="{StaticResource MainLabelStyle}" />
+        </StackLayout>
+
+    </Grid>
+</ContentPage>
